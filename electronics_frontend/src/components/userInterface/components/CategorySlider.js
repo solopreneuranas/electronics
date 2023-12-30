@@ -36,8 +36,8 @@ export default function CategorySlider(props) {
         speed: matches ? 500 : 1500,
         focusOnSelect: false,
         autoplay: false,
-        slidesToShow: matches ? 2 : 8,
-        slidesToScroll: matches ? 2 : 8,
+        slidesToShow: matches ? 2 : 7,
+        slidesToScroll: matches ? 2 : 7,
         arrows: false,
     };
 

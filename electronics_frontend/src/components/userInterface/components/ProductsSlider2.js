@@ -69,12 +69,12 @@ export default function ProductsSlider2(props) {
 
             return (
                 <div>
-                    <div style={{ background: '#383838', borderRadius: 15, padding: '8% 5% 4%', margin: '8px', height: matches_md ? '100%' : 430, position: 'relative' }}>
+                    <div style={{ background: '#383838', borderRadius: 15, padding: '8% 5% 4%', margin: '8px', height: matches_md ? '100%' : 350, position: 'relative' }}>
                         {props.saleStatus ?
                             <div style={{ position: 'absolute', zIndex: 99, background: '#12DAA8', color: 'white', padding: '1% 6%', left: 0, top: 0, borderRadius: '15px 0 3px 0' }}>SALE</div>
                             : <></>}
                         <center>
-                            <h3 style={{ fontWeight: 500, fontSize: 25, margin: '3% 0' }}>{formattedProductName.substring(0,40)}...</h3>
+                            <h3 style={{ fontWeight: 500, fontSize: 22, margin: '3% 0' }}>{formattedProductName.substring(0,40)}...</h3>
                             <hr style={{ width: '50%', margin: 'auto', opacity: '70%' }} />
                             <h3 style={{ fontWeight: 500, fontSize: 25, margin: '3% 0' }}>Up to <span style={{ fontWeight: 700 }}>{percentageDiscount}%</span> Off</h3>
                             <img src={`${serverURL}/images/${mainImage}`} style={{ width: '70%', height: '70%' }} />

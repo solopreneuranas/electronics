@@ -36,10 +36,10 @@ export default function BuyButtons(props) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: matches_md ? '80%' : '25%',
+        width: matches_md ? '80%' : '35%',
         bgcolor: '#191919',
         color: 'white',
-        p: matches_md ? '8% 6%' : '2% 3.5%',
+        p: matches_md ? '8% 6%' : '4%',
         borderRadius: 1
     };
 
