@@ -1,0 +1,49 @@
+body {
+  font-family: 'Poppins';
+  padding: 0 !important;
+  margin: 0 !important;
+  /* overflow-x: hidden !important; */
+}
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.css-2ulfj5-MuiTypography-root {
+  font-weight: 600 !important;
+  font-size: 25px !important;
+  margin-left: 0 !important;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+  padding: 10px !important;
+}
+
+.css-ig9rso-MuiToolbar-root {
+  padding-left: 15px !important;
+  color: #004cef;
+}
+
+.profileImg:hover {
+  cursor: pointer !important;
+}
+
+.css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop {
+  background-color: #323232a1 !important;
+  color: #9b9b9ba1;
+}
+
+.css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+  background-color: black !important;
+  color: white !important;
+}
+
+.css-106c1u2-MuiBadge-badge {
+  background-color: #00E9BF !important;
+  color: black !important;
+}
+
+/* .css-6hp17o-MuiList-root-MuiMenu-list{
+  background-color: black;
+} */
