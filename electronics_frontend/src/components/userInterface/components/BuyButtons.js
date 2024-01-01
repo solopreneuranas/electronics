@@ -64,9 +64,9 @@ export default function BuyButtons(props) {
             setCount(c)
             props.onChange(c)
         }
-        else if (count <= 0) {
+        else if (count < 0 || count == 0 ) {
             dispatch({ type: 'DELETE_PRODUCT', payload: [product.productdetailsid, product] })
-            setOpen(false);
+            setOpen(false)
         }
         props.setRefresh(!props.refresh)
     }
@@ -88,7 +88,7 @@ export default function BuyButtons(props) {
             minimumFractionDigits: 2,
         });
         return (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
                 <Modal
                     style={{ background: '#9b9b9ba1' }}
                     open={open}

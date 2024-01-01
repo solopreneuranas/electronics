@@ -70,6 +70,7 @@ export default function Otp({ otpStatus, setOtpStatus, number, otp }) {
     }
 
     const handleSubmit = async () => {
+        alert(otpArray)
         var otpEntered = otpArray.join('')
         if (otpEntered == otpReceived) {
             
@@ -83,7 +84,6 @@ export default function Otp({ otpStatus, setOtpStatus, number, otp }) {
             // }
         }
         else {
-            // navigate('/')
             var body = { 'mobileno': number }
             var response = await postData('ui-Home/check_user', body)
             if (response.status == true) {

@@ -13,6 +13,7 @@ import DisplayReduxProducts from './components/userInterface/components/screens/
 import Checkout from './components/userInterface/components/screens/Checkout';
 import Account from './components/userInterface/components/screens/Account';
 import UserProfile from './components/userInterface/components/screens/UserProfile';
+import Wishlist from './components/userInterface/components/screens/Wishlist';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route element={<CategoryPage />} path="/category" />
           <Route element={<BrandPage />} path="/brand" />
           <Route element={<Cart />} path="/cart" />
+          <Route element={<Wishlist />} path="/wishlist" />
           <Route element={<ReduxProducts />} path="/employee" />
           <Route element={<DisplayReduxProducts />} path="/displayemployees" />
           <Route element={<Checkout />} path="/checkout" />

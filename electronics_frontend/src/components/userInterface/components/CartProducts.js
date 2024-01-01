@@ -15,7 +15,7 @@ import CartSummary from './CartSummary';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import BuyButtons from './BuyButtons';
-import { useSelector } from 'react-redux';
+import CheckIcon from '@mui/icons-material/Check';
 
 var useStyles = makeStyles({
     center: {
@@ -41,12 +41,10 @@ export default function CartProducts(props) {
     var navigate = useNavigate()
     var products = props.cartProducts
     const [refresh, setRefresh] = useState(false)
-    const [removeDialog, setremoveDialog] = useState(false);
-    const handleRemoveDialogOpen = () => {
-        setremoveDialog(true);
-    };
-    const handleRemoveDialogClose = () => {
-        setremoveDialog(false);
+    const [wishlistDialog, setWishlistDialog] = useState(false)
+
+    const handleCloseWishlistDialog = () => {
+        setWishlistDialog(false);
     };
 
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -82,52 +80,15 @@ export default function CartProducts(props) {
         borderRadius: 2
     };
 
+    useEffect(function () {
+        props.setRefresh(!props.refresh)
+    }, [props])
+
     const rating = () => {
         return (
             <Box>
                 <Rating name="read-only" value={value} readOnly style={{ color: '#12DAA8' }} />
             </Box>
-        )
-    }
-
-    const removeCartProductDialog = () => {
-        return (
-            <Modal
-                style={{ background: '#9b9b9ba1' }}
-                open={removeDialog}
-                onClose={handleRemoveDialogClose}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                        timeout: 500,
-                    },
-                }}
-            >
-                <Fade in={removeDialog}>
-                    <Box sx={removeProductStyle}>
-                        <CloseIcon onClick={handleRemoveDialogClose} fontSize='large' style={{ position: 'absolute', top: '6%', right: '4%', cursor: 'pointer' }} />
-                        <center><h3 style={{ fontWeight: 500, fontSize: 25, margin: 0 }}>Are you sure you wany to remove this Product?</h3></center>
-                        <Grid container spacing={2} style={{ marginTop: '3%' }}>
-                            <Grid item sm={6} style={{ width: '50%' }}>
-                                <div style={{ display: 'flex', flexDirection: 'row', gap: '3%', justifyContent: 'center', width: '100%' }}>
-                                    <Button variant='contained' onClick={handleRemoveDialogClose} fullWidth
-                                        style={{ height: '100%', padding: '4% 0', borderRadius: 5, color: 'white', border: '1px solid white', background: 'transparent', fontWeight: 500, fontSize: 16, boxShadow: 'none' }}
-                                    >No</Button>
-                                </div>
-                            </Grid>
-                            <Grid item sm={6} style={{ width: '50%' }}>
-                                <div style={{ display: 'flex', flexDirection: 'row', gap: '3%', justifyContent: 'center', width: '100%' }}>
-                                    <Button variant='contained' fullWidth
-                                        style={{ height: '100%', padding: '4% 0', borderRadius: 5, color: 'black', border: 'none', background: '#00E9BF', fontWeight: 500, fontSize: 16, boxShadow: 'none' }}
-                                    >Yes</Button>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Fade>
-            </Modal>
-
         )
     }
 
@@ -149,8 +110,45 @@ export default function CartProducts(props) {
         }
         props.setRefresh(!props.refresh)
     }
-    const cartProductComponent = () => {
 
+    const handleWishlist = (item, id) => {
+        var count = item.qty * 0;
+        var body = { ...item, qty: count }
+        dispatch({ type: 'ADD_PRODUCT_WISHLIST', payload: [id, body] })
+        dispatch({ type: 'DELETE_PRODUCT', payload: [id, item] })
+        setWishlistDialog(true)
+        props.setRefresh(!props.refresh)
+    }
+
+    const addedToWishlistDialog = () => {
+        return (
+            <div style={{ position: 'relative', width: '100%' }}>
+                <Modal
+                    style={{ background: '#9b9b9ba1' }}
+                    open={wishlistDialog}
+                    onClose={handleCloseWishlistDialog}
+                    closeAfterTransition
+                    slots={{ backdrop: Backdrop }}
+                    slotProps={{
+                        backdrop: {
+                            timeout: 500,
+                        },
+                    }}>
+                    <Fade in={wishlistDialog}>
+                        <Box sx={style}>
+                            <CloseIcon onClick={handleCloseWishlistDialog} fontSize='large' style={{ position: 'absolute', top: '6%', right: '4%', cursor: 'pointer' }} />
+                            <h3 style={{ fontWeight: 500, fontSize: 25, margin: 0, display: 'flex', alignItems: 'center' }}>
+                                <CheckIcon style={{ color: '#00E9BF', marginRight: '2%' }} fontSize='large' />
+                                Item moved to Wishlist
+                            </h3>
+                        </Box>
+                    </Fade>
+                </Modal>
+            </div >
+        )
+    }
+
+    const cartProductComponent = () => {
         return products.map((item, i) => {
 
             var imageArray = item.picture.split(',')
@@ -178,9 +176,9 @@ export default function CartProducts(props) {
                             <center><img src={`${serverURL}/images/${mainImage}`} style={{ width: matches_md ? '60%' : '80%', height: matches_md ? '60%' : '80%' }} /></center>
                         </Grid>
 
-                        <Grid item md={9}>
+                        <Grid item md={9} style={{ width: '100%' }}>
                             <Grid container spacing={1}>
-                                <Grid item md={8}>
+                                <Grid item md={8} style={{ width: '100%' }}>
                                     <h3 onClick={() => handleProductClick(item)} style={{ fontWeight: 500, fontSize: matches_md ? 20 : 25, margin: '1% 0', cursor: 'pointer' }}>{`${item.brandname} ${item.modelno} ${item.productname.substring(0, 50)}...`}</h3>
                                     <p style={{ display: 'inline-block', marginBottom: '0 0 1%', border: '1px solid #FF02B9', borderRadius: 5, padding: '1% 2%', fontSize: 16, fontWeight: 600, color: '#FF02B9' }}>
                                         {item.status}
@@ -196,14 +194,6 @@ export default function CartProducts(props) {
                                         <LocationOnIcon /> Delivery within 7 days<br />
                                         Will be delivered by 17 November 2023
                                     </div>}
-
-                                    <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
-                                        <Button variant='outlined' fullWidth
-                                            style={{ padding: '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 11 : 16, width: matches_md ? '50%' : '' }} >
-                                            Move to Wishlist
-                                        </Button>
-                                        <BuyButtons product={item} onChange={(value) => handleQtyChange(item, value)} setRefresh={setRefresh} refresh={refresh} screen='cart' buttonBg='#00E9BF' border='none' color='black'/>
-                                    </div>
 
                                 </Grid>
                                 <Grid item md={4} style={{ display: 'flex', flexDirection: 'column' }}>
@@ -230,6 +220,18 @@ export default function CartProducts(props) {
                                     </div>
                                     <hr style={{ width: '100%', opacity: '20%', display: matches_md ? 'none' : '' }} />
                                 </Grid>
+                                <div style={{ display: 'flex', flexDirection: 'row', gap: '3%', width: '100%' }}>
+                                    <div style={{ width: '50%' }}>
+                                        <Button variant='outlined' fullWidth
+                                            onClick={() => handleWishlist(item, item.productdetailsid)}
+                                            style={{ padding: '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 11 : 16, width: matches_md ? '50%' : '' }} >
+                                            Move to Wishlist
+                                        </Button>
+                                    </div>
+                                    <div style={{ width: '50%' }}>
+                                        <BuyButtons product={item} onChange={(value) => handleQtyChange(item, value)} setRefresh={setRefresh} refresh={refresh} screen='cart' buttonBg='#00E9BF' border='none' color='black' />
+                                    </div>
+                                </div>
                             </Grid>
                         </Grid>
 
@@ -242,14 +244,14 @@ export default function CartProducts(props) {
 
     return (
         <div style={{ padding: matches_md ? '2%' : '1% 5%' }}>
-            {removeCartProductDialog()}
+            {addedToWishlistDialog()}
             <Grid container spacing={1} style={{ padding: '2%' }}>
-                <Grid item md={9} style={{ padding: matches_sm ? 0 : '0 2% 0 0' }}>
+                <Grid item md={8} style={{ padding: matches_sm ? 0 : '0 2% 0 0' }}>
                     {cartProductComponent()}
                 </Grid>
-                <Grid item md={3} style={{ paddingLeft: '1%', width: '100%' }}>
+                <Grid item md={4} style={{ paddingLeft: '1%', width: '100%' }}>
                     <div style={{ position: matches_md ? 'relative' : 'sticky', top: matches_md ? 0 : '24%', width: '100%' }}>
-                        <CartSummary products={products} screen='cart'/>
+                        <CartSummary products={products} screen='cart' />
                     </div>
                 </Grid>
             </Grid>

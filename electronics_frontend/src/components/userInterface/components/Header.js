@@ -19,6 +19,7 @@ import HamburgerMenu from './HamburgerMenu';
 import MenuComponent from './MenuComponent';
 import { useSelector } from 'react-redux';
 import Login from './Login';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 var useStyles = makeStyles({
     root: {
@@ -80,6 +81,7 @@ export default function Header(props) {
 
                             <div style={{ display: "flex", width: 250, justifyContent: matches_md ? 'end' : 'start', marginLeft: 'auto' }}>
                                 <AccountCircle onClick={handleClickOpen} style={{ fontSize: 30, margin: '0 5%', cursor: 'pointer' }} />
+                                <FavoriteBorderIcon onClick={()=> navigate('/wishlist')} style={{ fontSize: 30, margin: '0 4%', cursor: 'pointer' }}/>
                                 <Badge badgeContent={cartProduct?.length} color='primary'>
                                     <ShoppingCart onClick={handleCartIcon} style={{ fontSize: 30, margin: '0 5%', cursor: 'pointer' }} />
                                 </Badge>

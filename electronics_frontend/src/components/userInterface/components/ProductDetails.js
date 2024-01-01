@@ -108,7 +108,7 @@ export default function ProductDetails(props) {
         dispatch({ type: 'ADD_PRODUCT', payload: [product.productdetailsid, product] })
         props.setRefresh(!props.refresh)
     }
-
+    
     const productDetails = () => {
         const handleImageClick = (item, i) => {
             setMainImage(item);
@@ -220,7 +220,7 @@ export default function ProductDetails(props) {
                                 </Grid>
                             }
                             <Grid item md={10}>
-                                <ProductMainImage picture={product.picture} mainImage={mainImage} />
+                                <ProductMainImage picture={product.picture} mainImage={mainImage} product={product} setRefresh={setRefresh} refresh={refresh} screen='product' />
                                 {matches_md ?
                                     <ProductImagesMobileSlider picture={product.picture} setMainImage={setMainImage} mainImage={mainImage} />
                                     : <></>
@@ -265,7 +265,7 @@ export default function ProductDetails(props) {
                             </div>
                         </div><br />
                         <div style={{ display: 'flex', width: '100%', margin: '2% 0 6%', alignItems: 'center' }}>
-                            <BuyButtons onChange={handleQtyChange} product={product} setRefresh={setRefresh} refresh={refresh} screen='product' buttonBg='#00E9BF' border='none' color='black'/>
+                            <BuyButtons onChange={handleQtyChange} product={product} setRefresh={setRefresh} refresh={refresh} screen='product' buttonBg='#00E9BF' border='none' color='black' />
                         </div>
                         <div style={{ width: '100%', margin: matches_md ? '10% 0' : 0 }}>
                             <p style={{ margin: '1% 0 2%', opacity: '70%', fontWeight: 400, fontSize: 15 }}>Secure Payment with: </p>

@@ -14,31 +14,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import Swal from 'sweetalert2'
 import { useTheme } from '@mui/material/styles';
 import Login from './Login';
-import { postData } from '../../../services/FetchNodeServices';
+import { postData, serverURL } from '../../../services/FetchNodeServices';
 import { useNavigate } from 'react-router-dom';
-
-var useStyles = makeStyles({
-    center: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    left: {
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'center'
-    },
-    right: {
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center'
-    }
-})
+import useRazorpay from "react-razorpay";
 
 export default function CartSummary(props) {
 
     var navigate = useNavigate()
-    const theme = useTheme();
+    const theme = useTheme()
+    const [Razorpay] = useRazorpay();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
     const matches_sm = useMediaQuery(theme.breakpoints.down('sm'));
     const [status, setStatus] = useState(false)
@@ -49,9 +33,63 @@ export default function CartSummary(props) {
     var address1 = props.address1
     var address2 = props.address2
 
+    var products = props.products
+
+    var originalPrice = products.reduce((p1, p2) => {
+        return (p1 + (p2.price * p2.qty))
+    }, 0)
+
+    var offerPrice = products.reduce((p1, p2) => {
+        return (p1 + (p2.offerprice * p2.qty))
+    }, 0)
+
+    var amountSaved = originalPrice - offerPrice
+    var cartItems = products.length
+
+    const options = {
+        key: "rzp_test_GQ6XaPC6gMPNwH", // Enter the Key ID generated from the Dashboard
+        amount: offerPrice * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "Electronics",
+        description: "Test Transaction",
+        image: `${serverURL}/images/croma-logo.png`,
+
+        handler: function (response) {
+            alert(response.razorpay_payment_id);
+
+            alert(response.razorpay_signature);
+        },
+        prefill: {
+            name: `${firstName} ${lastName}`,
+            email: email,
+            contact: number,
+        },
+        notes: {
+            address: "Razorpay Corporate Office",
+        },
+        theme: {
+            color: "#3399cc",
+        },
+    };
+
     const handleClickOpen = () => {
         setStatus(true);
-    };
+    }
+
+    const handleRzrpPayment = async (params) => {
+
+        const rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+
+            alert(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+    }
 
     const handlePayment = async () => {
         if (props.status == false) {
@@ -69,23 +107,9 @@ export default function CartSummary(props) {
             }
         }
         else {
-            navigate('/')
-            window.scrollTo(0, 0)
+            handleRzrpPayment()
         }
     }
-
-    var products = props.products
-
-    var originalPrice = products.reduce((p1, p2) => {
-        return (p1 + (p2.price * p2.qty))
-    }, 0)
-
-    var offerPrice = products.reduce((p1, p2) => {
-        return (p1 + (p2.offerprice * p2.qty))
-    }, 0)
-
-    var amountSaved = originalPrice - offerPrice
-    var cartItems = products.length
 
     const formattedOfferPrice = offerPrice.toLocaleString('en-IN', {
         style: 'currency',

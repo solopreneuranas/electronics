@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ShareIcon from '@mui/icons-material/Share';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 var useStyles = makeStyles({
     center: {
@@ -29,19 +30,30 @@ var useStyles = makeStyles({
 
 export default function ProductMainImage(props) {
 
-    const navigate = useNavigate()
+    var dispatch = useDispatch()
+    var navigate = useNavigate()
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-    const [value, setValue] = useState(5);
     const classes = useStyles();
     const theme = useTheme();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
     const matches_sm = useMediaQuery(theme.breakpoints.down('sm'));
+    const product = props.product
+
+    useEffect(function () {
+        props.setRefresh(!props.refresh)
+    }, [props])
+
+    const handleWishlist = () => {
+        dispatch({ type: 'ADD_PRODUCT_WISHLIST', payload: [product.productdetailsid, product] })
+        props.setRefresh(!props.refresh)
+        navigate('/wishlist')
+    }
 
     const mainImageComponent = () => {
         return (
             <div>
                 <div style={{ top: 0, right: '6%', position: 'absolute' }}>
-                    <Checkbox {...label} icon={<FavoriteBorder style={{ color: 'white', width: 30, height: 30 }} />}
+                    <Checkbox onClick={handleWishlist} {...label} icon={<FavoriteBorder style={{ color: 'white', width: 30, height: 30 }} />}
                         checkedIcon={<Favorite style={{ color: '#12DAA9', width: 30, height: 30 }} />}
                     />
                 </div>

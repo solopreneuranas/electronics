@@ -26,12 +26,12 @@ export default function Checkout(props) {
     var myCart = useSelector(state => state.cart)
     var cartProducts = Object.values(myCart)
     const [refresh, setRefresh] = useState(false)
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [firstName, setFirstName] = useState(userData[0]?.firstname)
+    const [lastName, setLastName] = useState(userData[0]?.lastname)
     const [number, setNumber] = useState(mobileno)
-    const [email, setEmail] = useState('')
-    const [address1, setAddress1] = useState('')
-    const [address2, setAddress2] = useState('')
+    const [email, setEmail] = useState(userData[0]?.email)
+    const [address1, setAddress1] = useState(userData[0]?.address1)
+    const [address2, setAddress2] = useState(userData[0]?.address2)
 
     return (
         <div className={classes.home_root}>
@@ -43,7 +43,6 @@ export default function Checkout(props) {
                             :
                             <>
                                 <CheckoutForm
-                                    // mobileno={mobileno}
                                     number={number}
                                     setFirstName={setFirstName}
                                     setLastName={setLastName}
