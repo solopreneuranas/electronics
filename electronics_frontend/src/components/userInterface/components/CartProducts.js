@@ -183,8 +183,6 @@ export default function CartProducts(props) {
                                     <p style={{ display: 'inline-block', marginBottom: '0 0 1%', border: '1px solid #FF02B9', borderRadius: 5, padding: '1% 2%', fontSize: 16, fontWeight: 600, color: '#FF02B9' }}>
                                         {item.status}
                                     </p>
-                                    <p style={{ display: 'inline-block', border: '1px solid gainsboro', borderRadius: 5, padding: '1% 2%', fontWeight: 500, fontSize: 16, margin: 0, marginLeft: '2%' }}>Qty: {item.qty}</p>
-
 
                                     <p style={{ display: 'block', margin: '1% 0 0.5%', fontSize: 16, fontWeight: 400, opacity: '100%', color: '#12DAA4' }}>
                                         4.8 (193 Ratings & 185 Reviews) {rating()}

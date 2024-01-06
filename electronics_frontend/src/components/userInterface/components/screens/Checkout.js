@@ -18,7 +18,8 @@ export default function Checkout(props) {
     var location = useLocation()
     var mobileno = location.state.mobileno
     var status = location.state.status
-    var userData = location.state.userData
+    //var userData = location.state.userData
+    var userData = JSON.parse(localStorage.getItem("User"))
     const classes = useStyles()
     const theme = useTheme();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
@@ -27,8 +28,9 @@ export default function Checkout(props) {
     var cartProducts = Object.values(myCart)
     const [refresh, setRefresh] = useState(false)
     const [firstName, setFirstName] = useState(userData[0]?.firstname)
+    const [userId, setUserId] = useState(userData[0]?.userid)
     const [lastName, setLastName] = useState(userData[0]?.lastname)
-    const [number, setNumber] = useState(mobileno)
+    const [number, setNumber] = useState(userData[0]?.mobileno)
     const [email, setEmail] = useState(userData[0]?.email)
     const [address1, setAddress1] = useState(userData[0]?.address1)
     const [address2, setAddress2] = useState(userData[0]?.address2)
@@ -59,6 +61,7 @@ export default function Checkout(props) {
                     <div style={{ position: matches_md ? 'relative' : 'sticky', top: matches_md ? 0 : '28%', width: '100%' }}>
                         <CartSummary
                             screen='checkout'
+                            userId={userId}
                             status={status}
                             firstName={firstName}
                             lastName={lastName}

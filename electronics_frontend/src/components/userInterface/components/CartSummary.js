@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -17,23 +16,27 @@ import Login from './Login';
 import { postData, serverURL } from '../../../services/FetchNodeServices';
 import { useNavigate } from 'react-router-dom';
 import useRazorpay from "react-razorpay";
+import { useDispatch } from 'react-redux';
 
 export default function CartSummary(props) {
 
     var navigate = useNavigate()
+    var dispatch = useDispatch()
     const theme = useTheme()
     const [Razorpay] = useRazorpay();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
     const matches_sm = useMediaQuery(theme.breakpoints.down('sm'));
     const [status, setStatus] = useState(false)
+    const [coupon, setCoupon] = useState('')
+
     var firstName = props.firstName
     var lastName = props.lastName
     var number = props.number
     var email = props.email
     var address1 = props.address1
     var address2 = props.address2
-
     var products = props.products
+    var userId = props.userId
 
     var originalPrice = products.reduce((p1, p2) => {
         return (p1 + (p2.price * p2.qty))
@@ -48,16 +51,23 @@ export default function CartSummary(props) {
 
     const options = {
         key: "rzp_test_GQ6XaPC6gMPNwH", // Enter the Key ID generated from the Dashboard
-        amount: offerPrice * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        amount: offerPrice * 100,
         currency: "INR",
         name: "Electronics",
         description: "Test Transaction",
         image: `${serverURL}/images/croma-logo.png`,
 
-        handler: function (response) {
-            alert(response.razorpay_payment_id);
+        handler: async function (response) {
+            // alert(response.razorpay_payment_id)
+            // alert(response.razorpay_signature)
+            var body = { 'cart': products, 'mobileno': number, 'email': email, 'userid': userId, 'paymentstatus': response.razorpay_payment_id }
+            var result = await postData('ui-Home/submit_order', body)
+            if (result.status == true) {
+                //dispatch({ type: 'DELETE_PRODUCT', payload: [products.productdetailsid, products] })
+                navigate('/order-successfull', { state: { orderAmount: offerPrice } })
+                window.scrollTo(0, 0)
 
-            alert(response.razorpay_signature);
+            }
         },
         prefill: {
             name: `${firstName} ${lastName}`,
@@ -73,11 +83,17 @@ export default function CartSummary(props) {
     };
 
     const handleClickOpen = () => {
-        setStatus(true);
+        var userData = JSON.parse(localStorage.getItem("User"))
+        if (userData) {
+            navigate('/checkout', { state: { mobileno: number, status: true } })
+            window.scrollTo(0, 0)
+        }
+        else {
+            setStatus(true)
+        }
     }
 
     const handleRzrpPayment = async (params) => {
-
         const rzp1 = new Razorpay(options);
         rzp1.on("payment.failed", function (response) {
             alert(response.error.code);
@@ -85,7 +101,6 @@ export default function CartSummary(props) {
             alert(response.error.source);
             alert(response.error.step);
             alert(response.error.reason);
-
             alert(response.error.metadata.payment_id);
         });
         rzp1.open();
@@ -96,12 +111,8 @@ export default function CartSummary(props) {
             var body = { 'firstname': firstName, 'lastname': lastName, 'email': email, 'mobileno': number, 'address1': address1, 'address2': address2 }
             var response = await postData('ui-Home/submit_user', body)
             if (response.status === true) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'User account created sucessfully!',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                localStorage.setItem("User", JSON.stringify(body))
+                handleRzrpPayment()
             } else {
                 alert('Something is missing!')
             }
@@ -111,17 +122,17 @@ export default function CartSummary(props) {
         }
     }
 
-    const formattedOfferPrice = offerPrice.toLocaleString('en-IN', {
+    var formattedOfferPrice = offerPrice.toLocaleString('en-IN', {
         style: 'currency',
         currency: 'INR',
         minimumFractionDigits: 2,
     });
-    const formattedPrice = originalPrice.toLocaleString('en-IN', {
+    var formattedPrice = originalPrice.toLocaleString('en-IN', {
         style: 'currency',
         currency: 'INR',
         minimumFractionDigits: 2,
     });
-    const formattedSavedAmount = amountSaved.toLocaleString('en-IN', {
+    var formattedSavedAmount = amountSaved.toLocaleString('en-IN', {
         style: 'currency',
         currency: 'INR',
         minimumFractionDigits: 2,
@@ -139,11 +150,18 @@ export default function CartSummary(props) {
         borderRadius: 2
     };
 
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    var couponAppliedPrice
+    const handleCoupon = () => {
+        if (coupon == 'ANAS2024') {
+            couponAppliedPrice = offerPrice - 1000
+            alert(couponAppliedPrice)
+        }
+        setOpen(false)
+    }
 
     const couponModal = () => {
         return (
@@ -166,10 +184,10 @@ export default function CartSummary(props) {
                             <h3 style={{ fontWeight: 600, fontSize: 25, margin: 0 }}>Coupon</h3>
                             <Grid container spacing={2} style={{ marginTop: '3%' }}>
                                 <Grid item md={8}>
-                                    <TextField label="Enter coupon code" variant="outlined" fullWidth />
+                                    <TextField value={coupon} onChange={(e) => setCoupon(e.target.value)} label="Enter coupon code" variant="outlined" fullWidth />
                                 </Grid>
                                 <Grid item md={4}>
-                                    <Button variant='contained'
+                                    <Button variant='contained' onClick={handleCoupon}
                                         style={{ height: '100%', padding: '0 15%', borderRadius: 5, color: 'white', border: 'none', background: '#00B594', fontWeight: 500, fontSize: 16, boxShadow: 'none' }}
                                     >Apply</Button>
                                 </Grid>
@@ -263,7 +281,10 @@ export default function CartSummary(props) {
                         <p style={{ fontSize: 20, margin: '5% 0' }}>Total</p>
                     </Grid>
                     <Grid item sm={6} style={{ width: '50%', display: 'flex', justifyContent: 'right' }}>
-                        <p style={{ fontSize: 20, margin: '5% 0' }}>{formattedOfferPrice}</p>
+                        <p style={{ fontSize: 20, margin: '5% 0' }}>
+                            {formattedOfferPrice}
+                            {couponAppliedPrice}
+                        </p>
                     </Grid>
                 </Grid>
 
@@ -272,7 +293,6 @@ export default function CartSummary(props) {
                     <h3 style={{ fontWeight: 500, fontSize: 18, margin: 0 }}>Apply Coupon</h3>
                     < ArrowForwardIosIcon style={{ marginLeft: 'auto' }} />
                 </div>
-
                 {
                     props.screen == 'cart' ?
                         <>
@@ -282,7 +302,6 @@ export default function CartSummary(props) {
                             <Button onClick={handlePayment} fullWidth variant='contained' style={{ padding: '2% 0', borderRadius: 8, color: 'black', background: '#00E9BF', fontWeight: 500, fontSize: 18 }} >Proceed To Payment</Button>
                         </>
                 }
-
             </div>
             <Login status={status} setStatus={setStatus} />
         </div>

@@ -64,7 +64,7 @@ export default function BuyButtons(props) {
             setCount(c)
             props.onChange(c)
         }
-        else if (count < 0 || count == 0 ) {
+        else if (count < 0 || count == 0) {
             dispatch({ type: 'DELETE_PRODUCT', payload: [product.productdetailsid, product] })
             setOpen(false)
         }
@@ -179,11 +179,18 @@ export default function BuyButtons(props) {
                         <>
                             {props.screen == 'product' ?
                                 <>
-                                    <Button onClick={handleOpen} variant='contained'
-                                        style={{ width: 250, opacity: product.stock ? '100%' : '30%', padding: '2% 0', borderRadius: 10, color: 'white', background: 'transparent', border: '1px solid white', fontWeight: 600, fontSize: 18, boxShadow: 'none' }}
-                                    >
-                                        Add to Cart
-                                    </Button>
+                                    {
+                                        product.stock ?
+                                            <>
+                                                    <Button onClick={handleOpen} variant='contained'
+                                                    style={{ width: 250, opacity: product.stock ? '100%' : '30%', padding: '2% 0', borderRadius: 10, color: 'white', background: 'transparent', border: '1px solid white', fontWeight: 600, fontSize: 18, boxShadow: 'none' }}
+                                                >
+                                                    Add to Cart
+                                                </Button>
+                                            </>
+                                            :
+                                            <></>
+                                    }
                                     <Button onClick={handleBuyButton} variant='contained'
                                         style={{ width: 250, opacity: product.stock ? '100%' : '30%', padding: '2% 0', borderRadius: 10, color: 'black', background: '#00E9BF', border: '1px solid #00E9BF', fontWeight: 600, fontSize: 18, boxShadow: 'none' }}
                                     >

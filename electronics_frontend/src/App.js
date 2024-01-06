@@ -14,6 +14,8 @@ import Checkout from './components/userInterface/components/screens/Checkout';
 import Account from './components/userInterface/components/screens/Account';
 import UserProfile from './components/userInterface/components/screens/UserProfile';
 import Wishlist from './components/userInterface/components/screens/Wishlist';
+import OrderPlaced from './components/userInterface/components/screens/OrderPlaced';
+import UserOrders from './components/userInterface/components/screens/UserOrders';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route element={<Checkout />} path="/checkout" />
           <Route element={<Account />} path="/account" />
           <Route element={<UserProfile />} path="/account/profile" />
+          <Route element={<OrderPlaced />} path="/order-successfull" />
+          <Route element={<UserOrders />} path="/account/orders" />
         </Routes>
       </Router>
     </div>

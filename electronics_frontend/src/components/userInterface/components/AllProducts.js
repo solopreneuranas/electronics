@@ -11,35 +11,21 @@ import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useNavigate } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 import Filters from './Filters';
 import FiltersMobile from './FiltersMobile';
 
 export default function AllProducts() {
 
-    const navigate = useNavigate()
-
+    var navigate = useNavigate()
+    var location = useLocation()
+    var products = location?.state?.result
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [value, setValue] = useState(5);
-
     const classes = useStyles();
     const theme = useTheme();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
     const matches_sm = useMediaQuery(theme.breakpoints.down('sm'));
-
-    const [products, setProducts] = useState([]);
-
-
-    const fetchProducts = async () => {
-        var response = await getData('ui-Home/fetch_product_details');
-        setProducts(response.data);
-
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
 
     const rating = () => {
         return (
@@ -53,8 +39,8 @@ export default function AllProducts() {
         var staticURL = `${item.brandname} ${item.productname} ${item.modelno} ${item.color}`
         var staticURLArray = staticURL.split(' ')
         var dynamicURL = staticURLArray.join('-').toLowerCase()
-        window.scrollTo(0, 0);
         navigate(`/product/?${dynamicURL}`, { state: { product: item } });
+        window.scrollTo(0, 0);
     }
 
     const allProducts = () => {

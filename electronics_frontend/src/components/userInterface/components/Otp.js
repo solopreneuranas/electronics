@@ -15,7 +15,6 @@ import { serverURL, getData, postData } from '../../../services/FetchNodeService
 export default function Otp({ otpStatus, setOtpStatus, number, otp }) {
 
     var location = useLocation()
-    //console.log ("OTP", location.state)
     var otpReceived = otp
     var navigate = useNavigate()
     const theme = useTheme()
@@ -36,11 +35,9 @@ export default function Otp({ otpStatus, setOtpStatus, number, otp }) {
         borderRadius: 1
     };
 
-    const handleClose = () => {
-        setOtpStatus(false);
-    };
 
-    var otpArray = new Array(4)
+
+    var otpArray = []
     otpArray.fill('')
 
     const handleOtp0 = () => {
@@ -64,36 +61,30 @@ export default function Otp({ otpStatus, setOtpStatus, number, otp }) {
     const handleOtp3 = () => {
         if (document.getElementById('three').value.length == 1) {
             otpArray[3] = document.getElementById('three').value
-            //navigate('/checkout')
-            window.scrollTo(0, 0)
         }
     }
 
     const handleSubmit = async () => {
-        alert(otpArray)
         var otpEntered = otpArray.join('')
         if (otpEntered == otpReceived) {
-            
-            // var body = { 'mobileno': number }
-            // var response = await postData('ui-Home/check_user', body)
-            // if (response.status == true) {
-            //     navigate('/checkout', {state: {mobileno: number, status: response.status, user: response.data}})
-            // }
-            // else {
-            //     navigate('/checkout', {state: {mobileno: number, status: response.status, user: response.data}})
-            // }
+            alert('OTP Matched!')
         }
         else {
             var body = { 'mobileno': number }
             var response = await postData('ui-Home/check_user', body)
             if (response.status == true) {
-                navigate('/checkout', {state: {mobileno: number, status: response.status, userData: response.data}})
+                localStorage.setItem("User", JSON.stringify(response.data))
+                navigate('/checkout', { state: { mobileno: number, status: response.status } })
             }
             else {
-                navigate('/checkout', {state: {mobileno: number, status: response.status, userData: response.data}})
+                navigate('/checkout', { state: { mobileno: number, status: response.status } })
             }
         }
     }
+
+    const handleClose = () => {
+        setOtpStatus(false);
+    };
 
     return (
         <div style={{ position: 'relative' }}>

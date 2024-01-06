@@ -95,7 +95,7 @@ export default function ProductsSlider(props) {
 
             return (
                 <div key={i}>
-                    <div onClick={() => handleProductClick(item)} style={{ background: '#121212', cursor: 'pointer', borderRadius: 15, padding: '8% 5% 4%', margin: '12px', height: matches_md ? '100%' : 430, position: 'relative' }}>
+                    <div onClick={() => handleProductClick(item)} style={{ background: '#121212', cursor: 'pointer', borderRadius: 15, padding: '8% 5% 4%', margin: '12px', height: matches_md ? '100%' : 410, position: 'relative' }}>
                         <div className={classes.like_button_div}>
                             <Checkbox {...label} icon={<FavoriteBorder style={{ color: 'white', width: 30, height: 30 }} />}
                                 checkedIcon={<Favorite style={{ color: '#12DAA9', width: 30, height: 30 }} />}
@@ -104,7 +104,7 @@ export default function ProductsSlider(props) {
                         <center>
                             <img src={`${serverURL}/images/${mainImage}`} style={{ width: '80%', height: '80%', marginBottom: '10%' }} />
                         </center>
-                        <h3 style={{ fontWeight: 500, fontSize: 22, margin: '3% 0' }}>{formattedProductName.substring(0, 40)}...</h3>
+                        <h3 style={{ fontWeight: 500, fontSize: 22, margin: '3% 0' }}>{formattedProductName.substring(0, 35)}...</h3>
                         <h3 style={{ fontWeight: 500, fontSize: 28, margin: '3% 0' }}>
                             {formattedOfferPrice}
                             <s style={{ fontSize: 20, opacity: '70%', marginLeft: '3%', fontWeight: 400 }}>

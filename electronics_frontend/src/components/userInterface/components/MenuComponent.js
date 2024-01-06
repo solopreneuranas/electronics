@@ -92,13 +92,6 @@ export default function MenuComponent() {
                         onClick={(event) => handleClick(item.categoryid, item.categoryname, event)}
                     >
                         <div>
-                            {/* <center>
-                                <img
-                                    src={`${serverURL}/images/${item.image}`}
-                                    style={{ width: 70, height: 60 }}
-                                />
-                            </center> */}
-
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <p style={{ fontSize: 17, margin: 0 }}>{item.categoryname}</p>
                                 <KeyboardArrowDownIcon />
@@ -112,7 +105,7 @@ export default function MenuComponent() {
 
     const showProducts = () => {
         return (
-            products.slice(0, 5).map((item) => {
+            products.slice(0, 4).map((item) => {
                 var imageArray = item.picture.split(',')
                 var mainImage = imageArray[0]
 
@@ -159,7 +152,7 @@ export default function MenuComponent() {
 
     const showBrands = () => {
         return (
-            brands.slice(0, 7).map((item) => {
+            brands.slice(0, 5).map((item) => {
                 return (
                     <div>
                         <MenuItem
@@ -180,7 +173,6 @@ export default function MenuComponent() {
         )
     }
 
-
     const handleClick = (categoryid, categoryname, event) => {
         setAnchorEl(event.currentTarget);
         fetchBrands(categoryid);
@@ -189,17 +181,14 @@ export default function MenuComponent() {
         setCategoryName(categoryname);
     };
 
-
     const handleClose = () => {
         setAnchorEl(null);
     };
 
     return (
         <div style={{ position: "sticky", top: '11%', zIndex: 999 }} >
-
             <Grid container spacing={0}>
                 <Grid item xs={12}>
-
                     {matches_md ? <></> : <AppBar position="static"
                         style={{ background: 'black', boxShadow: 'none' }} >
                         <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>
@@ -222,7 +211,6 @@ export default function MenuComponent() {
                                     'aria-labelledby': 'basic-button',
                                 }}
                             >
-
                                 <Grid container spacing={1}>
                                     <CloseIcon onClick={handleClose} fontSize='large' style={{ position: 'absolute', top: '6%', right: '4%', cursor: 'pointer', color: 'gray', zIndex: 2 }} />
                                     <Grid item md={2} style={{ borderRight: '1px solid gray', padding: '2%' }}>
@@ -240,10 +228,8 @@ export default function MenuComponent() {
                             </Menu>
                         </Toolbar>
                     </AppBar>}
-
                 </Grid>
             </Grid>
-
         </div>
     );
 }

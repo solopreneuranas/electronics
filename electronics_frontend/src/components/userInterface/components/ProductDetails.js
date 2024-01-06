@@ -108,7 +108,7 @@ export default function ProductDetails(props) {
         dispatch({ type: 'ADD_PRODUCT', payload: [product.productdetailsid, product] })
         props.setRefresh(!props.refresh)
     }
-    
+
     const productDetails = () => {
         const handleImageClick = (item, i) => {
             setMainImage(item);
@@ -126,7 +126,7 @@ export default function ProductDetails(props) {
                     )
                 })
             )
-        };
+        }
 
         const formattedOfferPrice = product.offerprice.toLocaleString('en-IN', {
             style: 'currency',

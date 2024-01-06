@@ -293,7 +293,8 @@ router.post('/submit_user', function (req, res, next) {
                 res.json({ status: false, message: 'Database Error!' })
             }
             else {
-                res.json({ status: true, message: 'User added successfully!' })
+                res.json({ status: true, message: 'User added successfully!', data: result })
+                console.log("RESULT++>>", result)
             }
         })
     }
@@ -344,6 +345,89 @@ router.post('/check_user', function (req, res, next) {
             else {
                 if (result.length == 1) { res.json({ status: true, message: 'User found', data: result }) }
                 else { res.json({ status: false, message: 'User not found', data: [] }) }
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+    }
+})
+
+
+router.post('/fetch_orders_by_user', function (req, res, next) {
+    try {
+        pool.query('select O.*, (select P.picture from productdetails P where P.productdetailsid = O.productdetailsid) as picture from orders O where O.userid = ?', [req.body.userid], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                res.json({ status: true, message: 'Orders fetched', data: result })
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+    }
+})
+
+router.post("/submit_order", function (req, res) {
+    try {
+        console.log(req.body)
+        var q =
+            "insert into orders ( productdetailsid, orderdate, userid, email, mobileno, paymentstatus, deliverystatus, qty)  values ?";
+        pool.query(
+            q,
+            [
+                req.body.cart.map((item, i) => {
+                    console.log("hi");
+                    return [
+                        item.productdetailsid,
+                        new Date(),
+                        req.body.userid,
+                        req.body.email,
+                        req.body.mobileno,
+                        req.body.paymentstatus,
+                        "Undelivered",
+                        item.qty
+                    ];
+                }),
+            ],
+            function (error, result) {
+                if (error) {
+                    console.log(error);
+                    res.json({ status: false, message: "Database Error!" });
+                } else {
+                    console.log(result);
+                    res.json({ status: true, message: "Order Submitted Successfully" });
+                }
+            }
+        );
+    } catch (e) {
+        res.json({ status: false, message: "Server Error!" });
+    }
+});
+
+router.post('/filter_products', function (req, res) {
+    try {
+        console.log('TEXT==>>', req.body.text)
+        //var q = `select PD.*, (select C.categoryname from category C where C.categoryid = PD.categoryid) as categoryname, (select B.brandname from brands B where B.brandid = PD.brandid) as brandname, (select P.productname from products P where P.productid = PD.productid) as productname from productdetails PD where B.brandname like %${req.body.text}%`
+        var q = `SELECT 
+        PD.*,
+        (SELECT C.categoryname FROM category C WHERE C.categoryid = PD.categoryid) AS categoryname,
+        (SELECT B.brandname FROM brands B WHERE B.brandid = PD.brandid) AS brandname,
+        (SELECT P.productname FROM products P WHERE P.productid = PD.productid) AS productname
+    FROM 
+        productdetails PD
+    WHERE 
+        PD.brandid IN (SELECT B.brandid FROM brands B WHERE B.brandname LIKE '%${req.body.text}%') or
+        PD.categoryid IN (SELECT C.categoryid FROM category C WHERE C.categoryname LIKE '%${req.body.text}%') or
+        PD.productid IN (SELECT P.productid FROM products P WHERE P.productname LIKE '%${req.body.text}%')`
+        pool.query(q, function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                res.json({ status: true, data: result })
             }
         })
     }

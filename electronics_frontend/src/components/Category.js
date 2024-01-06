@@ -91,7 +91,7 @@ export default function Category() {
         else {
             Swal.fire({
                 position: 'top-end',
-                icon: 'success',
+                icon: 'error',
                 title: 'Category not added sucessfully!',
                 showConfirmButton: false,
                 timer: 1500

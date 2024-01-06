@@ -49,7 +49,7 @@ export default function Account(props) {
             icon: <FavoriteBorderIcon fontSize="large" />,
             title: 'My Wishlist',
             para: 'Have a look at your favourite products.',
-            link: '/account/wishlist'
+            link: '/wishlist'
         },
         {
             icon: <AccountCircleOutlinedIcon fontSize="large" />,

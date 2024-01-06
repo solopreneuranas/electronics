@@ -130,7 +130,7 @@ export default function Footer() {
                     </Grid>
 
                 </Grid>
-                <Grid item md={4} style={{padding: matches_md ? '3% 1%' : '0 4%', width: '100%' }}>
+                <Grid item md={4} style={{ padding: matches_md ? '3% 1%' : '0 4%', width: '100%' }}>
 
                     <h3 style={{ fontWeight: 600, textTransform: 'uppercase', fontSize: 18 }}>Shop by Brands</h3>
                     <Grid container spacing={1}>
