@@ -173,6 +173,7 @@ export default function DisplayAllProducts() {
                 fetchAllProducts()
                 Swal.fire({
                     icon: 'success',
+                    toast: true,
                     title: 'Product updated sucessfully!',
                     showConfirmButton: true
                 })
@@ -363,8 +364,8 @@ export default function DisplayAllProducts() {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleDataUpdate}>Update</Button>
-                        <Button onClick={handleClose} autoFocus>
+                        <Button variant='outlined' onClick={handleDataUpdate} startIcon={<SaveIcon />}>Update</Button>
+                        <Button variant='outlined' onClick={handleClose} autoFocus>
                             Close
                         </Button>
                     </DialogActions>
@@ -380,10 +381,9 @@ export default function DisplayAllProducts() {
             }}
                 title="Products List"
                 columns={[
-                    { title: 'Product Id', field: 'productid' },
-                    { title: 'Product Name', field: 'productname' },
-                    { title: 'Category', render: (rowData) => <div>{rowData.categoryid}/{rowData.categoryname}</div> },
-                    { title: 'Brand', render: (rowData) => <div>{rowData.brandid}/{rowData.brandname}</div> },
+                    { title: 'Product Name', render: (rowData) => <div style={{ width: 400 }}>{rowData.productname}</div> },
+                    { title: 'Category', render: (rowData) => <div>{rowData.categoryname}</div> },
+                    { title: 'Brand', render: (rowData) => <div>{rowData.brandname}</div> },
                     { title: 'Picture', field: 'picture', render: (rowData) => <img src={`${serverURL}/images/${rowData.picture}`} style={{ width: '80px', height: '80px', borderRadius: '50%' }} /> }
                 ]}
                 data={getProductsList}

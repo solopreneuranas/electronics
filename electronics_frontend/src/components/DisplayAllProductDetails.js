@@ -27,9 +27,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useMemo } from "react";
 import { DropzoneArea } from 'material-ui-dropzone'
-
-import Heading from './projectComponent/Heading';
-
+import SaveIcon from '@mui/icons-material/Save';
 import categoryicon from '../../src/assets/category.png'
 
 import '../App.css';
@@ -265,27 +263,27 @@ export default function DisplayAllProductDetails() {
 
     const handlePicturesUpdate = async () => {
 
-            var formData = new FormData()
-            formData.append('productdetailsid', productDetailsId)
-            files.map((file, i) => {
-                formData.append('picture' + i, file)
+        var formData = new FormData()
+        formData.append('productdetailsid', productDetailsId)
+        files.map((file, i) => {
+            formData.append('picture' + i, file)
+        })
+        var response = await postData('productdetails/update_product_details_pictures', formData)
+        if (response.status === true) {
+            fetchAllProductDetails()
+            Swal.fire({
+                icon: 'success',
+                title: 'Pictures updated sucessfully!',
+                showConfirmButton: true
             })
-            var response = await postData('productdetails/update_product_details_pictures', formData)
-            if (response.status === true) {
-                fetchAllProductDetails()
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Pictures updated sucessfully!',
-                    showConfirmButton: true
-                })
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Pictures not updated!',
-                    showConfirmButton: true
-                })
-            }
-      
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Pictures not updated!',
+                showConfirmButton: true
+            })
+        }
+
     }
 
     const handleOpen = (rowData) => {
@@ -506,8 +504,8 @@ export default function DisplayAllProductDetails() {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleDataUpdate}>Update</Button>
-                        <Button onClick={handleClose} autoFocus>
+                        <Button variant= 'outlined' startIcon={<SaveIcon />}  onClick={handleDataUpdate}>Update</Button>
+                        <Button variant= 'outlined' onClick={handleClose} autoFocus>
                             Close
                         </Button>
                     </DialogActions>
@@ -531,8 +529,8 @@ export default function DisplayAllProductDetails() {
                             maxFileSize={999999999} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handlePicturesUpdate}>Update</Button>
-                        <Button onClick={handlePicturesDialogClose} autoFocus>
+                        <Button variant='outlined' onClick={handlePicturesUpdate}>Update</Button>
+                        <Button variant='outlined' onClick={handlePicturesDialogClose} autoFocus>
                             Close
                         </Button>
                     </DialogActions>
@@ -549,11 +547,10 @@ export default function DisplayAllProductDetails() {
             }}
                 title="Products Details List"
                 columns={[
-                    { title: 'Product Id', field: 'productid' },
-                    { title: 'Product Name', field: 'productname' },
-                    { title: 'Category', render: (rowData) => <div>{rowData.categoryid}/{rowData.categoryname}</div> },
-                    { title: 'Brand', render: (rowData) => <div>{rowData.brandid}/{rowData.brandname}</div> },
-                    { title: 'Product Details', render: (rowData) => <div>{rowData.productdetailsid}/{rowData.modelno}</div> },
+                    { title: 'Product Name', render: (rowData) => <div style={{ width: 400 }}>{rowData.productname}</div> },
+                    { title: 'Category', render: (rowData) => <div>{rowData.categoryname}</div> },
+                    { title: 'Brand', render: (rowData) => <div>{rowData.brandname}</div> },
+                    { title: 'Product Details', render: (rowData) => <div>{rowData.modelno}</div> },
                     { title: 'Picture', field: 'picture', render: (rowData) => <img src={`${serverURL}/images/${rowData.picture.split(',')[0]}`} style={{ width: '80px', height: '80px', borderRadius: '50%' }} /> }
                 ]}
                 data={productDetailsList}

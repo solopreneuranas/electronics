@@ -147,6 +147,7 @@ export default function DisplayAllBrands() {
                 fetchAllBrands()
                 Swal.fire({
                     icon: 'success',
+                    toast: true,
                     title: 'Brand updated sucessfully!',
                     showConfirmButton: true
                 })
@@ -192,7 +193,6 @@ export default function DisplayAllBrands() {
     }
 
     const editBrand = () => {
-
         return (
             <div className={useStyle.root}>
                 <div className={useStyle.box}>
@@ -266,10 +266,6 @@ export default function DisplayAllBrands() {
                                 <p style={{ color: '#d32f2f', fontSize: '12.3px', marginLeft: '15px', marginTop: '1%' }}>{getErrors.categoryID}</p>
                             </FormControl>
                         </Grid>
-
-                        <Grid item xs={6} className={useStyle.center}>
-                            <Button startIcon={<SaveIcon />} onClick={handleDataUpdate} variant="contained" fullWidth style={{ background: '#004cef', padding: '5% 0', fontWeight: '500' }}>Update</Button>
-                        </Grid>
                     </Grid>
                 </div>
             </div>
@@ -324,6 +320,9 @@ export default function DisplayAllBrands() {
                             {editBrand()}
                         </DialogContentText>
                     </DialogContent>
+                    <DialogActions>
+                        <Button startIcon={<SaveIcon />} onClick={handleDataUpdate} variant="outlined" style={{ fontWeight: '500' }}>Update</Button>
+                    </DialogActions>
                 </Dialog>
             </div>
         );
@@ -336,9 +335,8 @@ export default function DisplayAllBrands() {
             }}
                 title="Brands List"
                 columns={[
-                    { title: 'Brand ID', field: 'brandid' },
-                    { title: 'Brand Name', field: 'brandname' },
-                    { title: 'Category', render: (rowData) => <div>{rowData.categoryid}/{rowData.categoryname}</div>},
+                    { title: 'Brand Name', render: (rowData) => <div style={{ width: 700 }}>{rowData.brandname}</div> },
+                    { title: 'Category', render: (rowData) => <div>{rowData.categoryname}</div> },
                     { title: 'Logo', field: 'logo', render: (rowData) => <img src={`${serverURL}/images/${rowData.logo}`} style={{ width: '80px', height: '80px', borderRadius: '50%' }} /> }
                 ]}
                 data={getBrandsList}

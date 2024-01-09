@@ -219,14 +219,14 @@ export default function CartProducts(props) {
                                     <hr style={{ width: '100%', opacity: '20%', display: matches_md ? 'none' : '' }} />
                                 </Grid>
                                 <div style={{ display: 'flex', flexDirection: 'row', gap: '3%', width: '100%' }}>
-                                    <div style={{ width: '50%' }}>
+                                    <div style={{ width: matches_md ? '100%' : '50%' }}>
                                         <Button variant='outlined' fullWidth
                                             onClick={() => handleWishlist(item, item.productdetailsid)}
-                                            style={{ padding: '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 11 : 16, width: matches_md ? '50%' : '' }} >
+                                            style={{ padding: matches_md ? '6%' : '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 13 : 16, width: matches_md ? '100%' : '' }} >
                                             Move to Wishlist
                                         </Button>
                                     </div>
-                                    <div style={{ width: '50%' }}>
+                                    <div style={{ width: matches_md ? '100%' : '50%' }}>
                                         <BuyButtons product={item} onChange={(value) => handleQtyChange(item, value)} setRefresh={setRefresh} refresh={refresh} screen='cart' buttonBg='#00E9BF' border='none' color='black' />
                                     </div>
                                 </div>

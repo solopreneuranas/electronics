@@ -24,7 +24,7 @@ export default function Wishlist() {
             {
                 wishlistProducts.length == 0 ?
                     <>
-                        <EmptyCart title='Yor Wishlist is Empty' />
+                        <EmptyCart title='Your Wishlist is Empty' />
                     </>
                     :
                     <>

@@ -232,34 +232,27 @@ export default function WishlistProducts(props) {
                                         4.8 (193 Ratings & 185 Reviews) {rating()}
                                     </p>
                                     <hr style={{ width: '100%', opacity: '20%', display: matches_md ? 'none' : '' }} />
-                                    <h3 style={{ fontWeight: 500, fontSize: 25, margin: '2% 0 0' }}>
+                                    <h3 style={{ fontWeight: 500, fontSize: 23, margin: '2% 0 0' }}>
                                         {formattedOfferPrice}
-                                        <s style={{ fontSize: 18, opacity: '70%', fontWeight: 400, margin: '0 3%' }}>
+                                        <s style={{ fontSize: 16, opacity: '70%', fontWeight: 400, margin: '0 3%' }}>
                                             {formattedPrice}
                                         </s>
-                                        <span style={{ fontSize: matches_md ? 13 : 16 }}>(Incl. all Taxes)</span>
+                                        <span style={{ fontSize: 13 }}>(Incl. all Taxes)</span>
                                     </h3>
                                     <hr style={{ width: '100%', opacity: '20%' }} />
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item md={3}>
-                            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                <div style={{ width: '100%' }}>
-                                    <Button variant='contained' fullWidth onClick={() => handleAddToCart(item.productdetailsid, item)}
-                                        style={{ padding: '2% 6%', borderRadius: 8, color: 'black', background: '#00E9BF', fontWeight: 600, fontSize: matches_md ? 11 : 16, width: matches_md ? '50%' : '' }} >
-                                        Move to Cart
-                                    </Button>
-                                </div>
-                                <div style={{ width: '100%', marginTop: '8%' }}>
-                                    <Button onClick={() => handleRemoveDialogOpen(item)} variant='outlined' fullWidth
-                                        style={{ padding: '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 11 : 16, width: matches_md ? '50%' : '' }} >
-                                        Remove from Wishlist
-                                    </Button>
-                                </div>
-                            </div>
+                        <Grid item md={3} style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <Button variant='contained' fullWidth onClick={() => handleAddToCart(item.productdetailsid, item)}
+                                style={{ padding: '2% 6%', borderRadius: 8, color: 'black', background: '#00E9BF', fontWeight: 600, fontSize: matches_md ? 11 : 16, width: matches_md ? '100%' : '' }} >
+                                Move to Cart
+                            </Button>
+                            <Button onClick={() => handleRemoveDialogOpen(item)} variant='outlined' fullWidth
+                                style={{ padding: '2% 6%', borderRadius: 8, color: 'white', border: '1px solid white', fontWeight: 500, fontSize: matches_md ? 11 : 16, width: matches_md ? '100%' : '', marginTop: matches_md ? '5%' : '8%' }} >
+                                Remove from Wishlist
+                            </Button>
                         </Grid>
-
                     </Grid>
                 </div >
             );

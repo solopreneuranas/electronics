@@ -9,7 +9,7 @@ import Fade from '@mui/material/Fade';
 import { TextField, InputAdornment } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { useNavigate } from 'react-router-dom';
-import Otp from './Otp';
+import Otp from './OtpComponent';
 
 export default function Login({ status, setStatus }) {
 
@@ -20,7 +20,6 @@ export default function Login({ status, setStatus }) {
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [otpStatus, setOtpStatus] = useState(false)
     const [number, setNumber] = useState('')
-    const [otp, setOtp] = useState('')
 
     const style = {
         position: 'absolute',
@@ -38,16 +37,23 @@ export default function Login({ status, setStatus }) {
         setStatus(false);
     };
 
-    const handleLoginClick = () => {
-        setOtpStatus(true, { state: { otp: otp } });
-        setStatus(false)
-        generateOtp()
-    }
-
     const generateOtp = () => {
         var otpValue = parseInt((Math.random() * 8999) + 1000)
-        setOtp(otpValue)
+        return otpValue
     }
+
+    const handleLogin = async () => {
+        var otp = generateOtp()
+        navigate('/otp', { state: { otp: otp, mobileno: number } })
+        setStatus(false)
+    }
+
+    const handleEnterPress = (event) => {
+        if (event.key === 'Enter') {
+            handleLogin()
+        }
+    }
+
 
     return (
         <div style={{ position: 'relative' }}>
@@ -82,6 +88,7 @@ export default function Login({ status, setStatus }) {
 
                                 <div style={{ width: 'auto', display: 'flex', background: 'transparent', padding: '2.5% 4%', borderRadius: 6, border: '1px solid white' }}>
                                     <TextField fullWidth
+                                        onKeyUpCapture={handleEnterPress}
                                         onChange={(event) => setNumber(event.target.value)}
                                         sx={{ input: { color: 'white', fontSize: 22 } }}
                                         variant="standard"
@@ -104,7 +111,7 @@ export default function Login({ status, setStatus }) {
 
                             </Grid>
                             <Grid item sm={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                                <Button variant='contained' fullWidth onClick={handleLoginClick}
+                                <Button variant='contained' fullWidth onClick={handleLogin}
                                     style={{ padding: '2% 0', borderRadius: 8, color: 'black', background: '#00E9BF', fontWeight: 500, fontSize: 18 }}
                                 >Continue</Button>
                             </Grid>
@@ -112,7 +119,7 @@ export default function Login({ status, setStatus }) {
                     </Box>
                 </Fade>
             </Modal>
-            <Otp otpStatus={otpStatus} setOtpStatus={setOtpStatus} number={number} otp={otp}/>
+            {/* <Otp otpStatus={otpStatus} setOtpStatus={setOtpStatus} number={number} /> */}
         </div>
     )
 }

@@ -24,7 +24,6 @@ import Logout from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DisplayAllCategory from "../components/DisplayAllCategory";
 import Category from '../components/Category';
@@ -38,6 +37,7 @@ import Banners from '../components/Banners';
 import CategoryBanners from '../components/CategoryBanners';
 import BrandBanners from '../components/BrandBanners';
 import { serverURL } from '../services/FetchNodeServices';
+import SideDrawer from './SideDrawer';
 
 
 var useStyles = makeStyles({
@@ -138,20 +138,24 @@ export default function Dashboard() {
             title: 'Brand Banners',
             link: '/dashboard/brandbanners'
         }
-
     ]
 
+    const handleLogout= () => {
+        //localStorage.clear("Admin")
+        navigate('/')
+    }
+
     return (
-        <div className={useStyle.root}>
+        <div className={useStyle.root} style={{ background: '#ededed' }}>
             <div className={useStyle.box}>
                 <Grid container spacing={3} style={{ width: '100%', margin: 0 }}>
-                    <Grid item xs={2} style={{ background: '#F9FAFB', padding: '3% 2%', borderRight: '1px solid gainsboro', height: '100vh', position: 'sticky', top: 0 }}>
+                    <Grid item xs={2} style={{ background: '#191919', padding: '3% 1%', borderRight: '1px solid gainsboro', height: '100vh', position: 'sticky', top: 0 }}>
 
-                        <Grid style={{ background: '#EDEFF1', borderRadius: '15px', display: "flex", justifyContent: "left", alignItems: 'center', padding: '5% 8%' }}>
+                        <Grid style={{ background: 'black', borderRadius: '15px', display: "flex", justifyContent: "left", alignItems: 'center', padding: '5% 8%' }}>
                             <img src={`${serverURL}/images/${admin.picture}`} style={{ width: 50, height: 50, borderRadius: '50%', marginRight: '6%' }} />
                             <div>
-                                <div style={{ fontSize: '16px', fontWeight: '500', padding: 0, margin: 0 }}>{admin.name}</div>
-                                <div style={{ fontSize: '14px', fontWeight: '500', opacity: '70%', padding: 0, margin: 0 }}>{admin.emailid}</div>
+                                <div style={{ fontSize: '16px', fontWeight: '500', padding: 0, margin: 0, color: 'white' }}>{admin.name}</div>
+                                <div style={{ fontSize: 11, fontWeight: '500', opacity: '70%', padding: 0, margin: 0, color: 'white' }}>{admin.emailid}</div>
                             </div>
                         </Grid>
 
@@ -161,10 +165,10 @@ export default function Dashboard() {
                                 {listItems.map((item, i) => {
                                     return (
                                         <ListItemButton onClick={() => navigate(item.link)}>
-                                            <ListItemIcon>
+                                            <ListItemIcon style={{ color: 'white', opacity: '80%', }}>
                                                 {item.icon}
                                             </ListItemIcon>
-                                            <ListItemText style={{ opacity: '80%' }}>{item.title}</ListItemText>
+                                            <ListItemText style={{ opacity: '80%', color: 'white' }}>{item.title}</ListItemText>
                                         </ListItemButton>
                                     )
                                 })}
@@ -173,7 +177,7 @@ export default function Dashboard() {
 
                     </Grid>
 
-                    <Grid item xs={10} style={{ background: 'white', padding: '3% 1%', height: '100%' }}>
+                    <Grid item xs={10} style={{ background: '#ededed', padding: '3% 1%', height: '100%' }}>
                         <Grid container spacing={2}>
                             <Grid item md={10}>
                                 <TextField variant="outlined" fullWidth className={classes.roundedTextField} label="Search" />
@@ -239,14 +243,15 @@ export default function Dashboard() {
                                         Settings
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={handleClose} style={{ color: '#ff5028' }}>
+                                    <MenuItem onClick={handleLogout} style={{ color: '#ff5028' }}>
                                         <ListItemIcon>
                                             <Logout fontSize="small" style={{ color: '#ff5028' }} />
                                         </ListItemIcon>
                                         Logout
                                     </MenuItem>
                                 </Menu>
-                                <img className='profileImg' src={`${serverURL}/images/${admin.picture}`} style={{ width: 35, height: 35, borderRadius: '50%' }} onClick={handleClick} />
+                                <SideDrawer />
+                                {/* <img className='profileImg' src={`${serverURL}/images/${admin.picture}`} style={{ width: 35, height: 35, borderRadius: '50%' }} onClick={handleClick} /> */}
                             </Grid>
                         </Grid>
 

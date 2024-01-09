@@ -35,6 +35,9 @@ export default function CartSummary(props) {
     var email = props.email
     var address1 = props.address1
     var address2 = props.address2
+    var pincode = props.pincode
+    var city = props.city
+    var state = props.state
     var products = props.products
     var userId = props.userId
 
@@ -85,7 +88,7 @@ export default function CartSummary(props) {
     const handleClickOpen = () => {
         var userData = JSON.parse(localStorage.getItem("User"))
         if (userData) {
-            navigate('/checkout', { state: { mobileno: number, status: true } })
+            navigate('/checkout', { state: { 'mobileno': userData[0].mobileno, status: true, data: userData } })
             window.scrollTo(0, 0)
         }
         else {
@@ -107,11 +110,11 @@ export default function CartSummary(props) {
     }
 
     const handlePayment = async () => {
-        if (props.status == false) {
-            var body = { 'firstname': firstName, 'lastname': lastName, 'email': email, 'mobileno': number, 'address1': address1, 'address2': address2 }
+        if (props.status === false) {
+            var body = { 'firstname': firstName, 'lastname': lastName, 'email': email, 'mobileno': number, 'address1': address1, 'address2': address2, 'pincode': pincode, 'city': city, 'state': state }
             var response = await postData('ui-Home/submit_user', body)
             if (response.status === true) {
-                localStorage.setItem("User", JSON.stringify(body))
+                localStorage.setItem("User", JSON.stringify([body]))
                 handleRzrpPayment()
             } else {
                 alert('Something is missing!')

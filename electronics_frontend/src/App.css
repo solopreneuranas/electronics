@@ -22,8 +22,17 @@ body {
 
 .css-ig9rso-MuiToolbar-root {
   padding-left: 15px !important;
-  color: #004cef;
 }
+
+/* .MuiBox-root{
+  background-color: black !important;
+  color: white !important;
+} */
+
+/* .css-29rnav-MuiTableCell-root-MuiTablePagination-root{
+  background-color: black !important;
+  color: white !important;
+} */
 
 .profileImg:hover {
   cursor: pointer !important;

@@ -180,8 +180,8 @@ export default function DisplayAllCategory() {
 
         return (
             <div className={useStyle.root}>
-                <div className={useStyle.box}>
-                    <Grid container spacing={3}>
+                <div>
+                    <Grid container spacing={1}>
                         <Grid item xs={12} >
                             <h2 style={{ color: "black", margin: 0 }}>Category: <font style={{ color: '#004cef' }}>{categoryName}</font></h2>
                         </Grid>
@@ -232,12 +232,8 @@ export default function DisplayAllCategory() {
                                 label="Category Name"
                                 fullWidth />
                         </Grid>
-
                         <Grid item xs={12}>
                             <p style={{ color: '#FF0000', fontSize: '12.3px', marginLeft: '15px', marginTop: '0' }}>{getErrors.image}</p>
-                        </Grid>
-                        <Grid item xs={6} className={useStyle.center}>
-                            <Button startIcon={<SaveIcon />} onClick={handleDataUpdate} variant="contained" fullWidth style={{ background: '#004cef', padding: '5% 0', fontWeight: '500' }}>Update</Button>
                         </Grid>
                     </Grid>
                     <div>
@@ -306,6 +302,9 @@ export default function DisplayAllCategory() {
                             {Category()}
                         </DialogContentText>
                     </DialogContent>
+                    <DialogActions>
+                        <Button variant='outlined' startIcon={<SaveIcon />}  onClick={handleDataUpdate}>Update</Button>
+                    </DialogActions>
                 </Dialog>
             </div>
         );
@@ -316,8 +315,7 @@ export default function DisplayAllCategory() {
             <MaterialTable 
                 title="CATEGORY LIST"
                 columns={[
-                    { title: 'Category ID', field: 'categoryid' },
-                    { title: 'Category Name', field: 'categoryname' },
+                    { title: 'Category Name', render: (rowData) => <div style={{ width: 900 }}>{rowData.categoryname}</div> },
                     { title: 'Image', field: 'image', render: (rowData) => <img src={`${serverURL}/images/${rowData.image}`} style={{ width: '80px', height: '80px', borderRadius: '50%' }} /> }
                 ]}
                 data={category}

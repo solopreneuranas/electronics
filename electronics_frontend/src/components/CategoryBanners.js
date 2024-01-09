@@ -135,7 +135,7 @@ export default function CategoryBanners() {
             <div className={useStyle.box}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Heading image={categoryicon} caption="Category Banners" link='/displayallproductdetails' />
+                        <h3 style={{ margin: 0, fontWeight: 600, fontSize: 25 }}>Category Banners</h3>
                     </Grid>
                     <Grid item xs={12} className={useStyle.center}>
                         <DropzoneArea
@@ -180,11 +180,9 @@ export default function CategoryBanners() {
                         <p style={{ color: '#FF0000', fontSize: '12.3px', marginLeft: '15px', marginTop: '0' }}>{getErrors.brandId}</p>
                     </Grid>
 
-                    <Grid item xs={6} className={useStyle.center}>
-                        <Button onClick={handleSumit} variant="contained" fullWidth style={{ background: '#004cef', padding: '5% 0', fontWeight: '500' }}>Add</Button>
-                    </Grid>
-                    <Grid item xs={6} className={useStyle.center}>
-                        <Button onClick={handleReset} variant="contained" fullWidth style={{ background: '#004cef', padding: '5% 0', fontWeight: '500' }}>Reset</Button>
+                    <Grid item xs={5} className={useStyle.center}>
+                        <Button onClick={handleSumit} variant="outlined" fullWidth style={{ fontWeight: '500', marginRight: '3%' }}>Add</Button>
+                        <Button onClick={handleReset} variant="outlined" fullWidth style={{ fontWeight: '500' }}>Reset</Button>
                     </Grid>
                 </Grid>
             </div>

@@ -54,11 +54,23 @@ export default function Header(props) {
     var cartProduct = Object.values(myCart)
 
     const handleClickOpen = () => {
-        setStatus(true);
+        var userData = JSON.parse(localStorage.getItem("User"))
+        if (userData) {
+            navigate('/account')
+            window.scrollTo(0, 0)
+        }
+        else {
+            setStatus(true);
+        }
     };
-    
+
     const handleCartIcon = () => {
         navigate('/cart')
+        window.scrollTo(0, 0)
+    }
+
+    const handleWishlist = () => {
+        navigate('/wishlist')
         window.scrollTo(0, 0)
     }
 
@@ -81,7 +93,7 @@ export default function Header(props) {
 
                             <div style={{ display: "flex", width: 250, justifyContent: matches_md ? 'end' : 'start', marginLeft: 'auto' }}>
                                 <AccountCircle onClick={handleClickOpen} style={{ fontSize: 30, margin: '0 5%', cursor: 'pointer' }} />
-                                <FavoriteBorderIcon onClick={()=> navigate('/wishlist')} style={{ fontSize: 30, margin: '0 4%', cursor: 'pointer' }}/>
+                                <FavoriteBorderIcon onClick={handleWishlist} style={{ fontSize: 30, margin: '0 4%', cursor: 'pointer' }} />
                                 <Badge badgeContent={cartProduct?.length} color='primary'>
                                     <ShoppingCart onClick={handleCartIcon} style={{ fontSize: 30, margin: '0 5%', cursor: 'pointer' }} />
                                 </Badge>

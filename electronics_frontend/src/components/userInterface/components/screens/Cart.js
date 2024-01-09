@@ -25,7 +25,7 @@ export default function Cart() {
             {
                 cartProducts.length == 0 ?
                     <>
-                        <EmptyCart title='Yor Cart is Empty'/>
+                        <EmptyCart title='Yor Cart is Empty' />
                     </>
                     :
                     <>

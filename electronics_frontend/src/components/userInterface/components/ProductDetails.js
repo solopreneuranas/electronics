@@ -230,7 +230,7 @@ export default function ProductDetails(props) {
                     </Grid>
 
                     <Grid item md={6} style={{ paddingLeft: matches_md ? 0 : '2%', paddingTop: 0, width: '100%' }}>
-                        <h3 style={{ fontWeight: 500, fontSize: matches_sm ? 20 : 30, margin: 0 }}>{`${product.brandname} ${product.productname} ${product.modelno} ${product.color}`}</h3>
+                        <h3 style={{ fontWeight: 500, fontSize: matches_sm ? 20 : 25, margin: 0 }}>{`${product.brandname} ${product.productname} ${product.modelno} ${product.color}`}</h3>
                         <div style={{ display: 'flex', flexDirection: 'row', width: '100%', gap: '2%', margin: '3% 0', alignItems: 'center' }}>
                             <span style={{ minWidth: '100px', display: 'inline-block', marginBottom: '0 0 1%', border: '1px solid #FF02B9', borderRadius: 5, padding: '1% 2%', fontSize: 16, fontWeight: 600, color: '#FF02B9' }}>
                                 <center>{product.status}</center>

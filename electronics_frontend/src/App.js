@@ -16,6 +16,9 @@ import UserProfile from './components/userInterface/components/screens/UserProfi
 import Wishlist from './components/userInterface/components/screens/Wishlist';
 import OrderPlaced from './components/userInterface/components/screens/OrderPlaced';
 import UserOrders from './components/userInterface/components/screens/UserOrders';
+import Otp from './components/userInterface/components/screens/Otp';
+import OrderDetails from './components/userInterface/components/screens/OrderDetails';
+
 
 function App() {
   return (
@@ -38,6 +41,8 @@ function App() {
           <Route element={<UserProfile />} path="/account/profile" />
           <Route element={<OrderPlaced />} path="/order-successfull" />
           <Route element={<UserOrders />} path="/account/orders" />
+          <Route element={<Otp />} path="/otp" />
+          <Route element={<OrderDetails />} path="/order-details" />
         </Routes>
       </Router>
     </div>

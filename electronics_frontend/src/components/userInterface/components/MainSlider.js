@@ -20,7 +20,7 @@ export default function MainSlider(props) {
     var settings = {
         dots: false,
         infinite: true,
-        speed: 200,
+        speed: 300,
         focusOnSelect: true,
         autoplay: true,
         slidesToShow: 1,

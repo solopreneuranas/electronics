@@ -18,8 +18,8 @@ export default function Checkout(props) {
     var location = useLocation()
     var mobileno = location.state.mobileno
     var status = location.state.status
-    //var userData = location.state.userData
-    var userData = JSON.parse(localStorage.getItem("User"))
+    var userData = location.state.data[0]
+    //var userData = JSON.parse(localStorage.getItem("User"))
     const classes = useStyles()
     const theme = useTheme();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
@@ -27,37 +27,43 @@ export default function Checkout(props) {
     var myCart = useSelector(state => state.cart)
     var cartProducts = Object.values(myCart)
     const [refresh, setRefresh] = useState(false)
-    const [firstName, setFirstName] = useState(userData[0]?.firstname)
-    const [userId, setUserId] = useState(userData[0]?.userid)
-    const [lastName, setLastName] = useState(userData[0]?.lastname)
-    const [number, setNumber] = useState(userData[0]?.mobileno)
-    const [email, setEmail] = useState(userData[0]?.email)
-    const [address1, setAddress1] = useState(userData[0]?.address1)
-    const [address2, setAddress2] = useState(userData[0]?.address2)
+    const [firstName, setFirstName] = useState(userData?.firstname)
+    const [userId, setUserId] = useState(userData?.userid)
+    const [lastName, setLastName] = useState(userData?.lastname)
+    const [number, setNumber] = useState(userData?.mobileno)
+    const [email, setEmail] = useState(userData?.email)
+    const [address1, setAddress1] = useState(userData?.address1)
+    const [address2, setAddress2] = useState(userData?.address2)
+    const [pincode, setPincode] = useState('')
+    const [city, setCity] = useState('')
+    const [state, setState] = useState('')
 
     return (
         <div className={classes.home_root}>
             <Header />
-            <Grid container spacing={3} style={{ width: '100%', padding: '5% 10%' }}>
-                <Grid item md={8}>
+            <Grid container spacing={1} style={{ width: '100%', padding: matches_md ? '10% 6%' : '5% 10%' }}>
+                <Grid item md={8} style={{ width: '100%' }}>
                     {
                         status == true ? <><UserAddress userData={userData} /></>
                             :
                             <>
                                 <CheckoutForm
-                                    number={number}
+                                    number={mobileno}
                                     setFirstName={setFirstName}
                                     setLastName={setLastName}
                                     setEmail={setEmail}
                                     setNumber={setNumber}
                                     setAddress1={setAddress1}
                                     setAddress2={setAddress2}
+                                    setPincode={setPincode}
+                                    setCity={setCity}
+                                    setState={setState}
                                 />
                             </>
                     }
                     <CheckoutProducts products={cartProducts} setRefresh={setRefresh} refresh={refresh} />
                 </Grid>
-                <Grid item md={4}>
+                <Grid item md={4} style={{ width: '100%', marginTop: matches_md ? '8%' : 0 }}>
                     <div style={{ position: matches_md ? 'relative' : 'sticky', top: matches_md ? 0 : '28%', width: '100%' }}>
                         <CartSummary
                             screen='checkout'
@@ -66,9 +72,12 @@ export default function Checkout(props) {
                             firstName={firstName}
                             lastName={lastName}
                             email={email}
-                            number={number}
+                            number={mobileno}
                             address1={address1}
                             address2={address2}
+                            pincode={pincode}
+                            city={city}
+                            state={state}
                             products={cartProducts}
                         />
                     </div>

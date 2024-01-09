@@ -29,7 +29,7 @@ export default function CheckoutProducts(props) {
     }
 
     return (
-        <div style={{marginTop: '5%'}}>
+        <div style={{ marginTop: '5%' }}>
             <h3 style={{ fontWeight: 500, fontSize: 25, margin: 0 }}>Items in Cart: </h3>
             {
                 products.map((item, i) => {
@@ -44,7 +44,7 @@ export default function CheckoutProducts(props) {
                         minimumFractionDigits: 2,
                     });
                     return (
-                        <div style={{ background: '#121212', borderRadius: 10, padding: '1.5%', margin: '2% 0' }}>
+                        <div style={{ background: '#121212', borderRadius: 10, padding: matches_md ? '6%' : '1.5%', margin: '2% 0' }}>
                             <Grid container spacing={1}>
                                 <Grid item md={2} style={{ display: "flex", alignItems: "center" }}>
                                     <center><img src={`${serverURL}/images/${item.picture.split(',')[0]}`} style={{ width: matches_md ? '60%' : '60%', height: matches_md ? '60%' : '80%' }} /></center>
