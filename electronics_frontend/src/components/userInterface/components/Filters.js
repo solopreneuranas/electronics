@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { serverURL, getData } from '../../../services/FetchNodeServices';
+import { serverURL, getData, postData } from '../../../services/FetchNodeServices';
 import useStyles from '../components/screens/ProjectCSS';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { useNavigate } from 'react-router-dom';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -56,14 +57,13 @@ export default function Filters() {
 
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [value, setValue] = useState(5);
-
+    var navigate = useNavigate()
     const classes = useStyles();
     const theme = useTheme();
     const matches_md = useMediaQuery(theme.breakpoints.down('md'));
     const matches_sm = useMediaQuery(theme.breakpoints.down('sm'));
-
+    const [filteredProducts, setFilteredProducts] = useState([])
     const [expanded, setExpanded] = useState('panel1');
-
     const [categories, setCategories] = useState([])
     const [brands, setBrands] = useState([])
     const [featured, setFeatured] = useState([])
@@ -101,13 +101,33 @@ export default function Filters() {
         fetchColors()
     }, []);
 
+    const fetchProductsByCategory = async (item) => {
+        var body = { 'categoryname': item.categoryname }
+        var response = await postData('ui-Home/filter_products_by_category', body)
+        if (response.status == true) {
+            navigate('/store', { state: { result: response.data } })
+        }
+        else {
+            alert('failed')
+        }
+    }
+
+    const handleCategory = (item) => {
+        fetchProductsByCategory(item)
+    }
 
     const showCategories = () => {
         return (
             categories.map((item, index) => (
-                <FormControlLabel style={{ margin: '1% 0' }}
+                <FormControlLabel
+                    style={{ margin: '1% 0' }}
                     key={index}
-                    control={<Checkbox style={{ color: '#12DAA8', transform: 'scale(1.2)', opacity: '100%'}} />}
+                    control={
+                        <Checkbox
+                            style={{ color: '#12DAA8', transform: 'scale(1.2)', opacity: '100%' }}
+                            onChange={(event) => event.target.checked && handleCategory(item)}
+                        />
+                    }
                     label={
                         <Typography
                             style={{ fontSize: '19px', fontWeight: 400, color: 'white' }}
@@ -119,6 +139,7 @@ export default function Filters() {
             ))
         );
     };
+
 
     const showBrands = () => {
         return (
@@ -142,7 +163,7 @@ export default function Filters() {
     const showRange = () => {
         return (
             <FormControlLabel style={{ margin: '1% 0' }}
-                control={<Checkbox style={{color: '#12DAA8', transform: 'scale(1.2)', opacity: '100%' }} />}
+                control={<Checkbox style={{ color: '#12DAA8', transform: 'scale(1.2)', opacity: '100%' }} />}
                 label={
                     <Typography
                         style={{ fontSize: '19px', fontWeight: 400, color: 'white' }}

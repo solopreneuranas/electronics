@@ -19,6 +19,7 @@ export default function AllProducts() {
 
     var navigate = useNavigate()
     var location = useLocation()
+    //const [products, setProducts] = useState(location?.state?.result)
     var products = location?.state?.result
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [value, setValue] = useState(5);

@@ -302,7 +302,7 @@ export default function ProductDetails(props) {
 
                 <Grid container spacing={1} style={{ width: '100%', margin: 0 }}>
                     <Grid item md={12} style={{ width: '100%' }}>
-                        <ProductAccordians product={product} description={product.description} color={product.color} categoryname={product.categoryname} modelno={product.modelno} brandname={product.brandname} productname={product.productname} hsncode={product.hsncode} />
+                        <ProductAccordians refresh={refresh} setRefresh={setRefresh} product={product} setProduct={props.setProduct} />
                     </Grid>
                 </Grid>
             </div >

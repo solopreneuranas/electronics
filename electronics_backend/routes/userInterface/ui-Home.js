@@ -441,4 +441,105 @@ router.post('/filter_products', function (req, res) {
     }
 })
 
+router.post('/filter_products_by_category', function (req, res) {
+    try {
+        var q = `SELECT 
+        PD.*,
+        (SELECT C.categoryname FROM category C WHERE C.categoryid = PD.categoryid) AS categoryname,
+        (SELECT B.brandname FROM brands B WHERE B.brandid = PD.brandid) AS brandname,
+        (SELECT P.productname FROM products P WHERE P.productid = PD.productid) AS productname
+    FROM 
+        productdetails PD
+    WHERE 
+        PD.categoryid IN (SELECT C.categoryid FROM category C WHERE C.categoryname = ?)`
+        pool.query(q, [req.body.categoryname], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                res.json({ status: true, data: result })
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+    }
+})
+
+router.post('/submit_review', function (req, res, next) {
+    try {
+        pool.query('insert into reviews (productdetailsid, mobileno, description, ratings, firstname, lastname, date) values (?,?,?,?,?,?,?)', [req.body.productdetailsid, req.body.mobileno, req.body.description, req.body.ratings, req.body.firstname, req.body.lastname, new Date()], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                res.json({ status: true, message: 'Review submitted successfully!' })
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+    }
+})
+
+router.post('/fetch_all_reviews_by_product', function (req, res) {
+    try {
+        pool.query('select * from reviews where productdetailsid = ?', [req.body.productdetailsid], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                res.json({ status: true, data: result })
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+        console.log(e)
+    }
+})
+
+router.post('/check_user_order', function (req, res, next) {
+    try {
+        pool.query('select * from orders where mobileno = ? and productdetailsid = ? ', [req.body.mobileno, req.body.productdetailsid], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                if (result.length == 1) {
+                    res.json({ status: true, message: 'User orders found', data: result })
+                }
+                else {
+                    res.json({ status: false, message: 'User orders not found' })
+                }
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+    }
+})
+
+router.post('/check_user_review', function (req, res) {
+    try {
+        pool.query('select * from reviews where mobileno = ? and productdetailsid = ?', [req.body.mobileno, req.body.productdetailsid], function (error, result) {
+            if (error) {
+                res.json({ status: false, message: 'Database Error!' })
+            }
+            else {
+                if (result.length == 1) {
+                    res.json({ status: true, message: 'User Review found', data: result })
+                }
+                else {
+                    res.json({ status: false, message: 'User Review not found' })
+                }
+            }
+        })
+    }
+    catch (e) {
+        res.json({ status: false, message: 'Server Error!' })
+        console.log(e)
+    }
+})
+
 module.exports = router;
